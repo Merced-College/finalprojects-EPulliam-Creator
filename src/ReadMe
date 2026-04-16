@@ -1,0 +1,52 @@
+Sonic-Style 2D Game Engine
+Description of the Program
+This project is a simple 2D game engine inspired by classic Sonic-style movement. It simulates player physics such as acceleration, gravity, jumping, and movement along flat and sloped surfaces. The program uses Java Swing for rendering and provides a basic framework for platformer-style games.
+The player can move left and right, jump, and interact with terrain that includes both flat ground and angled slopes. The goal of the project is to demonstrate physics-based movement and collision handling in a 2D environment.
+
+How to Run the Program
+Controls:
+Left Arrow → Move left
+Right Arrow → Move right
+Spacebar → Jump
+
+Features of the Program
+Smooth 60 FPS game loop
+Player movement with acceleration and friction
+Gravity and jumping mechanics
+Collision detection with terrain
+Support for sloped surfaces (angle-based movement)
+Double-buffered rendering for smoother visuals
+Keyboard input using key bindings (more reliable than key listeners)
+Data Structures Used
+ArrayList<Surface>
+Stores all terrain surfaces in the game
+Allows dynamic addition/removal of level elements
+Objects/Classes
+Player → Stores position, velocity, and movement state
+Surface → Represents terrain using two endpoints
+Vector2 → Represents 2D vectors for future physics expansion
+Primitive Variables
+Used for physics values such as speed, gravity, and position
+
+Algorithms Used
+1. Game Loop (Fixed Time Step)
+Uses a delta timing system to maintain consistent updates at 60 FPS
+Ensures smooth and stable gameplay regardless of system speed
+2. Physics Simulation
+Applies acceleration when movement keys are pressed
+Applies friction when no input is given
+Uses gravity to simulate falling
+Caps maximum speed to prevent overflow
+3. Collision Detection
+Checks if the player is above a surface using X-range comparison
+Uses vertical position (y) to detect landing
+Snaps the player to the surface when collision occurs
+4. Linear Interpolation (LERP)
+Used in Surface.getYAt(x) to calculate the exact Y position on a slope
+
+Formula:
+
+y = y1 + t * (y2 - y1)
+5. Trigonometric Movement
+Uses cos(angle) and sin(angle) to move the player along slopes
+Allows natural movement on angled terrain
