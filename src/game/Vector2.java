@@ -21,3 +21,4 @@ public class Vector2 {
      return new Vector2(x * scalar, y * scalar);
  }
 }
+
