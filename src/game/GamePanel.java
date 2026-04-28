@@ -7,7 +7,11 @@ import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
 
-    // Screen dimensions and target FPS
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// Screen dimensions and target FPS
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private static final int FPS = 60;

@@ -5,22 +5,21 @@ import java.util.ArrayList;
 
 public class Player {
 
-    private double x, y; // position
+    private double x, y;
 
-    private double groundSpeed = 0; // speed along ground
-    private double velocityY = 0;   // vertical velocity (air)
+    private double groundSpeed = 0;
+    private double velocityY = 0;
 
     private boolean onGround = false;
-    private double angle = 0; // current surface angle
+    private double angle = 0;
 
-    // Physics constants (control "feel" of movement)
     private final double ACCEL = 0.2;
     private final double FRICTION = 0.05;
     private final double GRAVITY = 0.5;
     private final double JUMP_FORCE = -10;
     private final double MAX_SPEED = 8;
 
-    private boolean left, right; // input states
+    private boolean left, right;
 
     public Player(double x, double y) {
         this.x = x;
@@ -29,33 +28,26 @@ public class Player {
 
     public void update(ArrayList<Surface> surfaces) {
 
-        // Apply player input as acceleration
         if (left) groundSpeed -= ACCEL;
         if (right) groundSpeed += ACCEL;
 
-        // Clamp speed so it doesn't grow infinitely
         if (groundSpeed > MAX_SPEED) groundSpeed = MAX_SPEED;
         if (groundSpeed < -MAX_SPEED) groundSpeed = -MAX_SPEED;
 
-        // Apply friction when no input is given
         if (!left && !right) {
             if (groundSpeed > 0) groundSpeed -= FRICTION;
             if (groundSpeed < 0) groundSpeed += FRICTION;
         }
 
         if (onGround) {
-            // Move along the slope direction using angle
             x += groundSpeed * Math.cos(angle);
             y += groundSpeed * Math.sin(angle);
         } else {
-            // Apply gravity when in air
             velocityY += GRAVITY;
-
             y += velocityY;
-            x += groundSpeed; // air retains horizontal momentum
+            x += groundSpeed;
         }
 
-        // Assume not grounded until collision proves otherwise
         onGround = false;
 
         for (Surface s : surfaces) {
@@ -64,29 +56,38 @@ public class Player {
 
                 int groundY = s.getYAt((int) x);
 
-                // Land on surface if falling onto it
                 if (y >= groundY - 40 && velocityY >= 0) {
 
-                    y = groundY - 40; // snap player to surface
-
-                    velocityY = 0; // stop falling
-
+                    y = groundY - 40;
+                    velocityY = 0;
                     onGround = true;
-
-                    angle = s.getAngle(); // align with slope
+                    angle = s.getAngle();
                 }
             }
         }
 
-        // Reset angle if airborne
         if (!onGround) {
             angle = 0;
+        }
+
+        // --- NEW: Screen boundaries ---
+        double minX = 0;
+        double maxX = 800 - 40;
+
+        if (x < minX) {
+            x = minX;
+            groundSpeed = 0;
+        }
+
+        if (x > maxX) {
+            x = maxX;
+            groundSpeed = 0;
         }
     }
 
     public void jump() {
         if (onGround) {
-            velocityY = JUMP_FORCE; // apply upward force
+            velocityY = JUMP_FORCE;
             onGround = false;
         }
     }
